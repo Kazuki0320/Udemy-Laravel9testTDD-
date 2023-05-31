@@ -7,9 +7,13 @@ use Illuminate\Http\Request;
 
 class PostListController extends Controller
 {
-    public function index() 
+    public function index()
     {
-        $posts = Post::get();
+        $posts = Post::query()
+            ->with('user')
+            ->orderByDesc('comments_count')
+            ->withCount('comments')
+            ->get();
 
         return view('index', compact('posts'));
     }
