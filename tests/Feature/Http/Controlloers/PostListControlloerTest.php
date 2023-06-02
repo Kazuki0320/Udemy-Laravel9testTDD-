@@ -47,6 +47,24 @@ class PostListControllerTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    function ブログの一覧で、非公開のブログは表示されない()
+    {
+        $post1 = POST::factory()->closed()->create([
+            'title' => 'これは非公開のブログです',
+        ]);
+
+        $post2 = POST::factory()->create([
+            'title' => 'これは公開済みのブログです',
+        ]);
+
+        $this->get('/')
+            ->assertDontSee('これは非公開のブログです')
+            ->assertSee('これは公開済みのブログです');
+    }
+
+    /**
      *
      * @test
      */
